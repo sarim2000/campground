@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 const ejsMate = require("ejs-mate");
+const catchAsync = require('./utils')
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
 	useNewUrlParser: true,
 	useCreateIndex: true,
@@ -58,6 +59,10 @@ app.put("/campgrounds/:id", async (req, res) => {
 	});
 	res.redirect(`/campgrounds/${campground._id}`);
 });
+
+app.post('/campgrounds/:id/reviews', catchAsync(async (req, res){
+	
+} ))
 
 app.delete("/campgrounds/:id", async (req, res) => {
 	const { id } = req.params;
