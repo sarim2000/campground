@@ -8,7 +8,9 @@ const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 const Review = require("./models/review");
-
+const passport = require("passport");
+const User = require("./models/user");
+const LocalStrategy = require("passport-local");
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
 	useNewUrlParser: true,
 	useCreateIndex: true,
@@ -29,6 +31,10 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
 const validateCampground = (req, res, next) => {
 	const { error } = campgroundSchema.validate(req.body);
@@ -104,6 +110,8 @@ app.put(
 		res.redirect(`/campgrounds/${campground._id}`);
 	})
 );
+
+app.get("");
 
 app.delete(
 	"/campgrounds/:id",
